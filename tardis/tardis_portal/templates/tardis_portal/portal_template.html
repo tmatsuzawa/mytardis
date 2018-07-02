@@ -79,137 +79,110 @@
     {% endblock %}
   </head>
   <body>
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="fa fa-bar"></span>
-            <span class="fa fa-bar"></span>
-            <span class="fa fa-bar"></span>
-          </a>
-          {% block site_brand %}
-          <span class="brand"><a href="{% url 'tardis.tardis_portal.views.index' %}">{{ site_title|default:'MyTardis' }}</a></span>
-          {% endblock %}
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li><a href="{% url 'tardis.tardis_portal.views.index' %}">Home</a></li>
-              <li><a href="{% url 'tardis.tardis_portal.views.about' %}">About</a></li>
-              <li><a href="{% url 'tardis.tardis_portal.views.my_data' %}">My Data</a></li>
-              <li><a href="{% url 'tardis.tardis_portal.views.public_data' %}">Public Data</a></li>
-              <li><a href="{% url 'tardis.tardis_portal.views.stats' %}">Stats</a></li>
-              {% with request|check_if_facility_manager as facility_manager %}
-              {% if facility_manager %}
-              <li><a href="{% url 'tardis.tardis_portal.views.facility_overview' %}">Facility Overview</a></li>
-              {% endif %}{% endwith %}
-              <li><a href="http://mytardis.readthedocs.io/en/{{ version.tag|lower }}/userguide.html" target="_blank"><b>Help</b></a></li>
-            </ul>
-            <ul class="login-nav nav pull-right">
-            {% if is_authenticated %}
-              <li id="user-menu" class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#user-menu">
-                  {{ username }}
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  {% if manage_account_enabled %}
-                      <li>
-                        <a href="{% url 'tardis.tardis_portal.views.manage_user_account' %}">
-                          <!-- Font Awesome needs a "link" icon! -->
-                          <i class="fa fa-user"></i>
-                          Manage Account
-                        </a>
-                      </li>
-                  {% endif %}
-		  {% if request.user.api_key.key %}
-                  <li>
-                    <a href="{% url 'tardis.tardis_portal.download.download_api_key' %}">
-                      <!-- Font Awesome needs a "link" icon! -->
-                      <i class="fa fa-key"></i>
-                      Download Api Key
-                    </a>
-                  </li>
-		  {% endif %}
-                  {% if perms.tardis_portal.change_userauthentication %}
-                  <li>
-                    <a href="{% url 'tardis.tardis_portal.views.manage_auth_methods' %}">
-                      <!-- Font Awesome needs a "link" icon! -->
-                      <i class="fa fa-tags"></i>
-                      Link Accounts
-                    </a>
-                  </li>
-                  {% endif %}
-                  {% if is_superuser %}
-                  <li>
-                    <a href="{% url 'admin:index' %}">
-                      <i class="fa fa-key"></i>
-                        Admin Interface
-                    </a>
-                  </li>
-                  {% endif %}
-                  {% if perms.tardis_portal.change_objectacl or perms.auth.change_group %}
-                  <li class="divider"></li>
-                  <!-- {% if perms.tardis_portal.change_objectacl %}
-                  <li>
-                    <a href="{% url 'tardis.tardis_portal.views.control_panel' %}">
-                      <i class="fa fa-user"></i>
-                      Experiment Access
-                    </a>
-                  </li>
-                  {% endif %} -->
-                  {% if perms.auth.change_group or perms.auth.change_user %}
-                  <li>
-                    <a href="{% url 'tardis.tardis_portal.views.manage_groups' %}">
-                      <i class="fa fa-user" style="text-shadow: 2px -2px #666666"></i>
-                      Group Management
-                    </a>
-                  </li>
-                  {% endif %}
-                  <li class="divider"></li>
-                  {% endif %}
-                  <li>
-                    <a href="{% url 'django.contrib.auth.views.logout' %}">
-                      <i class="fa fa-signout"></i>
-                      Log Out
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            {% else %}
-              {% if registration_enabled %}
-              <li>
-                <a href="{% url 'tardis.tardis_portal.views.register' %}">
-                  Register
-                </a>
-              </li>
+    <nav class="navbar navbar-expand-lg fixed-top flex-lg-row navbar-dark bg-dark">
+      {% block site_brand %}
+      <a class="navbar-brand" href="{% url 'tardis.tardis_portal.views.index' %}">{{ site_title|default:'MyTardis' }}</a>
+      {% endblock %}
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item"><a class="nav-link" href="{% url 'tardis.tardis_portal.views.index' %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'tardis.tardis_portal.views.about' %}">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'tardis.tardis_portal.views.my_data' %}">My Data</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'tardis.tardis_portal.views.public_data' %}">Public Data</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'tardis.tardis_portal.views.stats' %}">Stats</a></li>
+          {% with request|check_if_facility_manager as facility_manager %}
+          {% if facility_manager %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'tardis.tardis_portal.views.facility_overview' %}">Facility Overview</a></li>
+          {% endif %}{% endwith %}
+          <li class="nav-item"><a class="nav-link" href="http://mytardis.readthedocs.io/en/{{ version.tag|lower }}/userguide.html" target="_blank">Help</a></li>
+        </ul>
+        <form id="searchbox" method="get"
+            class="form-inline ml-md-auto flex-row"
+            action="{% url 'haystack_search' %}">
+          <input id="id_q" autocomplete="off" name="q"
+               type="search" class="form-control mr-sm-2"
+               placeholder="Search" aria-label="Search"
+               {% if query %} value="{{ query }}" {% endif %}/>
+        </form>
+        <ul class="navbar-nav mt-2 mt-lg-0 flex-row">
+          {% if is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+              {{ username }}
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              {% if manage_account_enabled %}
+              <a class="dropdown-item" href="{% url 'tardis.tardis_portal.views.manage_user_account' %}">
+                <!-- Font Awesome needs a "link" icon! -->
+                <i class="fa fa-user"></i>
+                Manage Account
+              </a>
               {% endif %}
-              <li>
-              {% if RAPID_CONNECT_ENABLED %}
-                  <a id="login-button" class="btn btn-info" href={{ RAPID_CONNECT_LOGIN_URL }}>
-                    <i class="fa fa-sign-in"></i>
-                    Log In
-                  </a>
-              {% else %}
-                <a id="login-button" class="btn btn-info" href="{% url 'tardis.tardis_portal.views.login' %}">
+		          {% if request.user.api_key.key %}
+              <a class="dropdown-item" href="{% url 'tardis.tardis_portal.download.download_api_key' %}">
+                <!-- Font Awesome needs a "link" icon! -->
+                <i class="fa fa-key"></i>
+                Download Api Key
+              </a>
+		          {% endif %}
+              {% if perms.tardis_portal.change_userauthentication %}
+              <a class="dropdown-item" href="{% url 'tardis.tardis_portal.views.manage_auth_methods' %}">
+                <!-- Font Awesome needs a "link" icon! -->
+                <i class="fa fa-tags"></i>
+                Link Accounts
+              </a>
+              {% endif %}
+              {% if is_superuser %}
+              <a class="dropdown-item" href="{% url 'admin:index' %}">
+                <i class="fa fa-key"></i>
+                  Admin Interface
+              </a>
+              {% endif %}
+              {% if perms.tardis_portal.change_objectacl or perms.auth.change_group %}
+              <div class="dropwdown-divider"></div>
+              {% if perms.auth.change_group or perms.auth.change_user %}
+              <a class="dropdown-item" href="{% url 'tardis.tardis_portal.views.manage_groups' %}">
+                <i class="fa fa-user" style="text-shadow: 2px -2px #666666"></i>
+                Group Management
+              </a>
+              {% endif %}
+              <div class="dropdown-divider"></div>
+              {% endif %}
+              <a class="dropdown-item" href="{% url 'django.contrib.auth.views.logout' %}">
+                <i class="fa fa-signout"></i>
+                Log Out
+              </a>
+            </div>
+          </li>
+          {% else %}
+            {% if registration_enabled %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'tardis.tardis_portal.views.register' %}">
+                Register
+              </a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+            {% if RAPID_CONNECT_ENABLED %}
+                <a class="nav-link" id="login-button" class="btn btn-outline-info" href={{ RAPID_CONNECT_LOGIN_URL }} role="button">
                   <i class="fa fa-sign-in"></i>
                   Log In
                 </a>
-              {% endif %}
-              </li>
+            {% else %}
+              <a class="nav-link" id="login-button" class="btn btn-outline-info" href="{% url 'tardis.tardis_portal.views.login' %}" role="button">
+                <i class="fa fa-sign-in"></i>
+                Log In
+              </a>
             {% endif %}
-            </ul>
-            {% if search_form %}
-            <form id="searchbox" method="get"
-                class="navbar-search pull-right"
-                action="{% url 'haystack_search' %}">
-              <input id="id_q" autocomplete="off" name="q"
-                   type="text" class="search-query" placeholder="Search"
-                   {% if query %} value="{{ query }}" {% endif %}/>
-            </form>
-            {% endif %}
-          </div><!--/.nav-collapse -->
-        </div>
+          {% endif %}
+        </ul>
       </div>
-    </div>
+    </nav>
 
     <div class="container-fluid">
       {% if subtitle %}
@@ -320,7 +293,9 @@
     </div>
     <!-- /container -->
     <script type="text/javascript"
-	    src="{% static 'js/lib/bootstrap-2.0.4/js/bootstrap.min.js' %}"></script>
+      src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript"
+      src="{% static 'Index.js' %}"></script>
     {% if ga_enabled %}
     <script type="text/javascript">
       (function(i,s,o,g,r,a,m) {
