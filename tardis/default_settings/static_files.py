@@ -45,12 +45,14 @@ NPM_FILE_PATTERNS = {
     'angular': ['*'],
     'angular-resource': ['*'],
     'blueimp-file-upload': ['*'],
+    'bootstrap': ['*'],
     'clipboard': ['*'],
+    '@fortawesome': ['*'],
     'jquery': ['*'],
     'jquery-migrate': ['*'],
     'jquery-ui-dist': ['jquery-ui.min.js'],
     'ng-dialog': ['*'],
+    'popper.js': ['*'],
     'underscore': ['*'],
     'underscore.string': ['*']
 }
-NPM_STATIC_FILES_PREFIX = path.join('js', 'lib')
